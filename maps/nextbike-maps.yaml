@@ -225,6 +225,8 @@ paths:
         name: loginkey
         required: true
         description: loginkey of a user with privileges for respective domains/cities
+        schema:
+          type: string
       - in: query
         required: true
         name: format
@@ -342,6 +344,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/country'
+      required: [countries]
 
     markers_xml:
       type: array
@@ -357,6 +360,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/city'
+          required: [cities]
 
     service_country:
       allOf:
@@ -481,7 +485,7 @@ components:
             places:
               type: array
               items:
-                $ref: '#/components/schemas/base_place'
+                $ref: '#/components/schemas/place'
 
     service_city:
       allOf:
@@ -508,6 +512,16 @@ components:
           type: number
           xml:
             attribute: true
+        bounds:
+          type: object
+          xml:
+            attribute: true
+          properties:
+            south_west:
+              $ref: '#/components/schemas/latLng'
+            north_east:
+              $ref: '#/components/schemas/latLng'
+          required: [south_west, north_east]
         zoom:
           type: integer
           xml:
@@ -540,10 +554,6 @@ components:
           type: string
           xml:
             attribute: true
-        bounds:
-          type: object
-          xml:
-            attribute: true
         booked_bikes:
           type: integer
           xml:
@@ -567,9 +577,10 @@ components:
         places:
           type: array
           items:
-            $ref: '#/components/schemas/base_place'
+            $ref: '#/components/schemas/place'
+      required: [bounds, places]
 
-    base_place:
+    place:
       type: object
       properties:
         uid:
@@ -757,7 +768,7 @@ components:
     service_place:
       type: object
       allOf:
-        - $ref: '#/components/schemas/base_place'
+        - $ref: '#/components/schemas/place'
         - type: object
           properties:
             bike_list:
@@ -803,3 +814,14 @@ components:
               type: boolean
             visits:
               type: string
+    latLng:
+      type:
+        object
+      properties:
+        lat:
+          type: number
+        lng:
+          type: number
+      required: [lat,lng]
+
+
