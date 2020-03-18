@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Nextbike livemaps
+  title: Nextbike Maps
   description: Nextbike realtime bike and station location information
   version: 1.0.0
 servers:
@@ -111,7 +111,8 @@ paths:
                 $ref: '#/components/schemas/markers_xml'
     post:
       operationId: fetchMarkersInScopeByPost
-      summary: Returns a list of map markers for one city
+      summary: Returns a list of map markers for one city (deprecated, only for legacy compatibility)
+      deprecated: true
       responses:
         '200':
           description: Ok
@@ -208,7 +209,8 @@ paths:
                 $ref: '#/components/schemas/markers_xml'
     post:
       operationId: fetchMarkersByPost
-      summary: Returns a list of map markers of official or all stations
+      summary: Returns a list of map markers of official or all stations (deprecated, only for legacy compatibility)
+      deprecated: true
       responses:
         '200':
           description: Ok
@@ -310,7 +312,8 @@ paths:
                 $ref: '#/components/schemas/service_maps_xml'
     post:
       operationId: fetchServiceMapsPost
-      summary: return an array of places with extended service information
+      summary: return an array of places with extended service information (deprecated, only for legacy compatibility)
+      deprecated: true
       responses:
         '200':
           description: Ok
@@ -578,7 +581,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/place'
-      required: [bounds, places]
+      required: [bounds]
 
     place:
       type: object
@@ -659,7 +662,10 @@ components:
           type: boolean
           xml:
             attribute: true
-
+        bike_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/bike'
 
     bike:
       type: object
@@ -696,8 +702,12 @@ components:
             attribute: true
         pedelec_battery:
           type: integer
+          nullable: true
           xml:
             attribute: true
+        battery_pack:
+          type: object
+          nullable: true
 
     service_bike:
       type: object
@@ -774,7 +784,7 @@ components:
             bike_list:
               type: array
               items:
-                $ref: '#/components/schemas/bike'
+                $ref: '#/components/schemas/service_bike'
               xml:
                 attribute: true
             bike_racks:
